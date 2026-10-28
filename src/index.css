@@ -1,0 +1,302 @@
+@import 'tailwindcss';
+
+@theme {
+  --color-ink: #000000;
+  --color-coal: #0a0a0a;
+  --color-ash: #111111;
+  --color-smoke: #1c1c1e;
+  --color-line: #262628;
+  --color-bone: #ffffff;
+  --color-mute: #8e9096;
+  --color-silver: #c9ccd2;
+
+  --font-sans: 'Archivo Variable', system-ui, -apple-system, 'Segoe UI', sans-serif;
+  --font-serif: 'Instrument Serif', 'Times New Roman', serif;
+
+  --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+@layer base {
+  html {
+    background: var(--color-ink);
+    color: var(--color-bone);
+    -webkit-text-size-adjust: 100%;
+    scroll-padding-top: 5rem;
+  }
+  html.lenis,
+  html.lenis body {
+    height: auto;
+  }
+  .lenis.lenis-smooth {
+    scroll-behavior: auto !important;
+  }
+  body {
+    font-family: var(--font-sans);
+    background: var(--color-ink);
+    overflow-x: clip;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeLegibility;
+  }
+  ::selection {
+    background: var(--color-bone);
+    color: var(--color-ink);
+  }
+  :focus-visible {
+    outline: 2px solid var(--color-bone);
+    outline-offset: 3px;
+  }
+  img {
+    user-select: none;
+    -webkit-user-drag: none;
+  }
+  button {
+    cursor: pointer;
+  }
+}
+
+@layer components {
+  /* Expanded, heavy display face — echoes the wide wordmark of the logo. */
+  .display {
+    font-family: var(--font-sans);
+    font-stretch: 125%;
+    font-weight: 800;
+    text-transform: uppercase;
+    line-height: 0.88;
+    letter-spacing: -0.035em;
+  }
+  /* Long display words: normal width on phones so they stay large without overflowing. */
+  @media (max-width: 767px) {
+    .display {
+      font-stretch: 100%;
+    }
+  }
+  .display-light {
+    font-family: var(--font-sans);
+    font-stretch: 125%;
+    font-weight: 300;
+    text-transform: uppercase;
+    letter-spacing: 0.02em;
+  }
+  .serif-i {
+    font-family: var(--font-serif);
+    font-style: italic;
+    font-weight: 400;
+    text-transform: none;
+    letter-spacing: -0.01em;
+  }
+  .kicker {
+    font-size: 0.7rem;
+    font-weight: 600;
+    font-stretch: 112%;
+    letter-spacing: 0.32em;
+    text-transform: uppercase;
+  }
+  .gutter {
+    padding-inline: clamp(1rem, 4.5vw, 4rem);
+  }
+
+  /* Brushed-metal fill, same light direction as the logo (top-left → bottom-right). */
+  .silver {
+    background: linear-gradient(118deg, #ffffff 0%, #eceef1 28%, #9da1a8 46%, #f4f5f7 58%, #b7bac0 78%, #ffffff 100%);
+    background-size: 200% 100%;
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+  .silver-sheen {
+    animation: sheen 7s var(--ease-out-expo) infinite;
+  }
+  .group:hover .silver-hover,
+  .group:focus-visible .silver-hover {
+    background: linear-gradient(118deg, #ffffff 0%, #eceef1 28%, #9da1a8 46%, #f4f5f7 58%, #b7bac0 78%, #ffffff 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+  .outline-text {
+    color: transparent;
+    -webkit-text-stroke: 1px rgba(255, 255, 255, 0.55);
+  }
+  .outline-dark {
+    color: transparent;
+    -webkit-text-stroke: 1px rgba(0, 0, 0, 0.5);
+  }
+
+  /* Line mask used for headline reveals: <span data-line><span>text</span></span> */
+  [data-line] {
+    display: block;
+    overflow: hidden;
+    /* room for accents (É) and descenders despite the tight display line-height */
+    padding-top: 0.14em;
+    margin-top: -0.14em;
+    padding-bottom: 0.08em;
+    margin-bottom: -0.08em;
+  }
+  [data-line] > span {
+    display: inline-block;
+  }
+
+  .btn {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.75rem;
+    min-height: 3.5rem;
+    padding: 0 1.75rem;
+    border-radius: 999px;
+    font-size: 0.72rem;
+    font-weight: 700;
+    font-stretch: 115%;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    overflow: hidden;
+    isolation: isolate;
+    transition: color 0.5s var(--ease-out-expo), border-color 0.5s var(--ease-out-expo);
+  }
+  .btn::before {
+    content: '';
+    position: absolute;
+    inset: -2px;
+    z-index: -1;
+    transform: translateY(110%) skewY(-8deg);
+    /* skew pivots on the right edge so no corner peeks out at rest */
+    transform-origin: right;
+    transition: transform 0.6s var(--ease-out-expo);
+  }
+  .btn:hover::before,
+  .btn:focus-visible::before {
+    transform: translateY(0) skewY(0);
+  }
+  .btn-light {
+    background: var(--color-bone);
+    color: var(--color-ink);
+  }
+  .btn-light::before {
+    background: linear-gradient(118deg, #d9dce1, #9da1a8 50%, #eef0f2);
+  }
+  .btn-ghost {
+    border: 1px solid rgba(255, 255, 255, 0.28);
+    color: var(--color-bone);
+  }
+  .btn-ghost::before {
+    background: var(--color-bone);
+  }
+  .btn-ghost:hover,
+  .btn-ghost:focus-visible {
+    color: var(--color-ink);
+    border-color: var(--color-bone);
+  }
+  .btn-dark {
+    background: var(--color-ink);
+    color: var(--color-bone);
+  }
+  .btn-dark::before {
+    background: #2a2a2c;
+  }
+
+  .chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    border: 1px solid rgba(255, 255, 255, 0.16);
+    border-radius: 999px;
+    padding: 0.4rem 0.85rem;
+    font-size: 0.66rem;
+    font-weight: 600;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: rgba(255, 255, 255, 0.78);
+  }
+
+  /* Underline that draws itself on hover. */
+  .link-line {
+    background: linear-gradient(currentColor, currentColor) no-repeat 100% 100% / 0 1px;
+    transition: background-size 0.6s var(--ease-out-expo);
+  }
+  .link-line:hover,
+  .link-line:focus-visible {
+    background-position: 0 100%;
+    background-size: 100% 1px;
+  }
+
+  .field {
+    width: 100%;
+    background: transparent;
+    border: 0;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+    padding: 1.6rem 0 0.7rem;
+    font-size: 1.05rem;
+    color: var(--color-bone);
+    border-radius: 0;
+    transition: border-color 0.4s;
+  }
+  .field:focus {
+    outline: none;
+    border-color: var(--color-bone);
+  }
+  .field::placeholder {
+    color: transparent;
+  }
+  select.field {
+    appearance: none;
+    cursor: pointer;
+  }
+  select.field option {
+    background: #111;
+    color: #fff;
+  }
+}
+
+@layer utilities {
+  .no-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
+  .no-scrollbar {
+    scrollbar-width: none;
+  }
+}
+
+/* Film grain over everything — a single tiny SVG, no image request. */
+.grain {
+  pointer-events: none;
+  position: fixed;
+  inset: -50%;
+  z-index: 80;
+  opacity: 0.055;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  animation: grain 1.2s steps(6) infinite;
+}
+
+@keyframes grain {
+  0%, 100% { transform: translate(0, 0); }
+  20% { transform: translate(-3%, 2%); }
+  40% { transform: translate(2%, -3%); }
+  60% { transform: translate(-2%, -1%); }
+  80% { transform: translate(3%, 3%); }
+}
+@keyframes sheen {
+  0%, 30% { background-position: 100% 0; }
+  70%, 100% { background-position: -100% 0; }
+}
+@keyframes marquee {
+  to { transform: translate3d(-50%, 0, 0); }
+}
+@keyframes spin-slow {
+  to { transform: rotate(360deg); }
+}
+@keyframes pulse-dot {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.25; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+  .grain {
+    display: none;
+  }
+}
